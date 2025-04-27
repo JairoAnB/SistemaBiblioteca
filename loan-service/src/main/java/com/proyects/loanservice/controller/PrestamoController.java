@@ -41,7 +41,8 @@ public class PrestamoController {
 
     @DeleteMapping("/delete/{id}")
     public void deletePrestamo(@PathVariable Long id){
-        prestamoService.deletePrestamo(id);
+        prestamoService.refundPrestamo(id);
     }
+
 
 }

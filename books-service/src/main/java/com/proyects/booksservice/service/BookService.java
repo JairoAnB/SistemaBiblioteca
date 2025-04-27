@@ -88,7 +88,6 @@ public class BookService {
         Book bookEntity = bookRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("El libro con la id " + id + " no existe"));
 
-
         bookEntity.setStock(stock);
 
         bookRepository.save(bookEntity);

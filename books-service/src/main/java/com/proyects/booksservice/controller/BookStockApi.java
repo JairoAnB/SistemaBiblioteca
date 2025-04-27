@@ -51,7 +51,6 @@ public class BookStockApi {
 
     @PutMapping("/updateStock/{id}/{stock}")
     public void updateStock(@PathVariable Long id, @PathVariable Integer stock){
-
         bookService.updateStock(id, stock);
     }
 
