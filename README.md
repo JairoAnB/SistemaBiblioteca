@@ -99,13 +99,17 @@ INSERT INTO usuario (nombre, apellido, email, fecha_alta) VALUES
 ('Juan', 'Pérez', 'juan.perez@email.com', '2023-01-01'),
 ('Ana', 'García', 'ana.garcia@email.com', '2023-02-15'),
 ('Carlos', 'López', 'carlos.lopez@email.com', '2023-03-20');
-
+```
+### **Libros (Book Service)**
+```
 -- Insertar libros
 INSERT INTO book (titulo, autor_name, isbn, stock) VALUES
 ('La sombra del viento', 'Carlos Ruiz Zafón', '9788401362802', 5),
 ('Cien años de soledad', 'Gabriel García Márquez', '9780307474728', 3),
 ('1984', 'George Orwell', '9780451524935', 4);
-
+```
+### **Prestamos (loan Service)**
+```
 -- Insertar préstamos
 INSERT INTO prestamo (libro_id, usuario_id, monto, fecha_prestamo) VALUES
 (1, 1, 500, '2023-04-01'),
