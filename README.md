@@ -15,7 +15,7 @@ Este sistema se compone de tres microservicios principales que trabajan juntos d
 - **Facilidad de uso**: Los usuarios pueden pedir libros prestados, devolverlos, ver el historial de préstamos y mucho más, todo a través de simples solicitudes a las APIs.
 - **Microservicios**: Los tres servicios son independientes, lo que permite escalabilidad y flexibilidad. Si quieres agregar más funcionalidades o cambiar algo, ¡puedes hacerlo sin afectar a los demás servicios!
 
-## 🚀 Tecnologías que Usamos
+## 🚀 Tecnologías usadas
 
 Este sistema está desarrollado con las siguientes tecnologías que lo hacen rápido, eficiente y fácil de mantener:
 
