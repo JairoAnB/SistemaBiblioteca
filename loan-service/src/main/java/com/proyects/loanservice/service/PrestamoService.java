@@ -1,9 +1,6 @@
 package com.proyects.loanservice.service;
 
-import com.proyects.loanservice.dto.BookDTO;
-import com.proyects.loanservice.dto.BookStockUpdateDto;
-import com.proyects.loanservice.dto.LoanRequestDTO;
-import com.proyects.loanservice.dto.PrestamoDTO;
+import com.proyects.loanservice.dto.*;
 import com.proyects.loanservice.mapper.PrestamoMapper;
 import com.proyects.loanservice.model.Prestamo;
 import com.proyects.loanservice.repository.PrestamoRepository;
@@ -35,54 +32,57 @@ public class PrestamoService {
         this.prestamoRepository = prestamoRepository;
         this.prestamoMapper = prestamoMapper;
     }
-    public void validateUser(Long usuarioPrestamoId) {
-        //realiza un get a la api de usuarios usando rest Template
-        //void class se significa practiamente decirle que no importa la respuesta del body, solo quieres saber si responde correctamente o no
-        //Response entity es una clase que te permite obtener el status code de la respuesta
-        ResponseEntity<Void> response = restTemplate.getForEntity(user_service_url + usuarioPrestamoId, Void.class);
+    public UserDTO validateUser(Long usuarioPrestamoId) {
+        // Realiza un GET a la API de usuarios usando RestTemplate
+        ResponseEntity<UserDTO> response = restTemplate.getForEntity(user_service_url + usuarioPrestamoId, UserDTO.class);
 
-        //Validacion del estado 200, 404, etc
-        if (response.getStatusCode().is2xxSuccessful()) {
-            System.out.println("Usuario valido");
+        if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
+            System.out.println("Usuario válido: " + response.getBody().getNombres());
+            return response.getBody(); // <- Aquí retornas el usuario completo
         } else {
-            System.out.println("Usuario no valido");
+            throw new RuntimeException("Usuario no válido o no encontrado");
         }
     }
 
-    public void validateBook(Long libroId){
-
-        try{
-            //obtengo la informacion del libro
+    public BookDTO validateBook(Long libroId) {
+        try {
+            // Obtener la información del libro
             ResponseEntity<BookDTO> bookResponse = restTemplate.getForEntity(
                     book_service_url + libroId,
                     BookDTO.class
             );
-            if(!bookResponse.getStatusCode().is2xxSuccessful() || bookResponse.getBody() == null){
+
+            if (!bookResponse.getStatusCode().is2xxSuccessful() || bookResponse.getBody() == null) {
                 throw new RuntimeException("El libro con la id " + libroId + " no existe");
             }
 
             BookDTO bookDTO = bookResponse.getBody();
 
-            //Validar el stock
-            if(bookDTO.getStock() <= 0){
+            // Validar el stock
+            if (bookDTO.getStock() <= 0) {
                 throw new RuntimeException("El libro con la id " + libroId + " no tiene stock");
             }
 
+            // Actualizar el stock del libro
             BookStockUpdateDto updateDto = new BookStockUpdateDto(bookDTO.getStock() - 1);
 
-            //Actualizar el stock del libro
-            ResponseEntity<BookStockUpdateDto> updateDtoResponse = restTemplate.exchange //Utilizo restTemplate exchange es para poder realizar solicitudes de varios tipos.
-                                                                                            // en este caso put ya que actualizaremos recursos existentes
-                    (book_service_url_stock + libroId + "/" + (bookDTO.getStock() - 1), //Se construye la URL del microservicio, contenando el libro ID, slash y el stock actual, cual se le desminiye uno.
-                            HttpMethod.PUT, new HttpEntity<>(updateDto) //HttpEntity se ocupa para incluir el cuerpo de la solicitud en formato json, updateDto es un objeto que contiene el stock decrementado
-                            , BookStockUpdateDto.class); // El tipo de respuesta esperado se dificne como bookStockUpdateDto.class esto se significa que el cuerpo de la respuesta espera ser un objeto de la clase.
-            //La respuesta se almacena en updateDtoResponse, que es el objeto creado por responseEntity, este objeto contiene tanto el cuerpo de la respuesta, como el codigo
+            restTemplate.exchange(
+                    book_service_url_stock + libroId + "/" + (bookDTO.getStock() - 1),
+                    HttpMethod.PUT,
+                    new HttpEntity<>(updateDto),
+                    BookStockUpdateDto.class
+            );
+
             System.out.println("Stock actualizado correctamente");
+
+            return bookDTO; //
 
         } catch (Exception e) {
             e.printStackTrace();
+            throw new RuntimeException("Error al validar el libro: " + e.getMessage());
         }
     }
+
 
 
     @Transactional(readOnly = true)
@@ -104,13 +104,16 @@ public class PrestamoService {
     @Transactional
     public PrestamoDTO createPrestamo(LoanRequestDTO request){
         //Validar el usuario y el libro
-        validateUser(request.getUsuarioPrestamoId());
-        validateBook(request.getLibroPrestamoId());
+        UserDTO userDTO =  validateUser(request.getUsuarioPrestamoId());
+        BookDTO bookDTO = validateBook(request.getLibroPrestamoId());
 
         //Si existe se sigue con el proceso
         Prestamo prestamoEntity = prestamoMapper.toPrestamoEntity(request);
         prestamoEntity.setFechaPrestamo(LocalDate.now());
-
+        prestamoEntity.setFechaDevolucion(request.getFechaDevolucion());
+        prestamoEntity.setLibroTitulo(bookDTO.getLibroTitulo());
+        prestamoEntity.setLibroAutor(bookDTO.getAutor());
+        prestamoEntity.setUsuarioNombre(userDTO.getNombres());
         //Se guarda el prestamo en la base de datos
         Prestamo prestamoGuardado = prestamoRepository.save(prestamoEntity);
 
@@ -128,6 +131,11 @@ public class PrestamoService {
         prestamoExistente.setLibroId(temporalInfo.getLibroId());
         prestamoExistente.setMonto(temporalInfo.getMonto());
         prestamoExistente.setFechaPrestamo(temporalInfo.getFechaPrestamo());
+        prestamoExistente.setFechaDevolucion(temporalInfo.getFechaDevolucion());
+        prestamoExistente.setLibroTitulo(temporalInfo.getLibroTitulo());
+        prestamoExistente.setLibroAutor(temporalInfo.getLibroAutor());
+        prestamoExistente.setUsuarioNombre(temporalInfo.getUsuarioNombre());
+
 
         Prestamo prestamoEntity = prestamoRepository.save(prestamoExistente);
 

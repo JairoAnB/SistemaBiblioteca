@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Usuarios</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<main>
+  <h1>Gestión de Usuarios</h1>
+
+  <div class="actions-bar">
+    <input type="search" id="search-input" placeholder="Buscar por nombre, email, DNI...">
+    <button id="create-button" class="button primary">Nuevo Usuario</button>
+  </div>
+
+  <div class="table-container">
+    <table id="data-table">
+      <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Email</th>
+        <th>Teléfono</th>
+        <th>DNI/RUT</th>
+        <th>Fecha Registro</th>
+        <th>Acciones</th>
+      </tr>
+      </thead>
+      <tbody id="users-tbody">
+      </tbody>
+    </table>
+  </div>
+</main>
+
+<div id="form-modal" class="modal">
+  <div class="modal-content">
+    <span class="modal-close" id="modal-close-button">&times;</span>
+    <h2 id="modal-title">Nuevo Usuario</h2>
+    <form id="item-form">
+      <input type="hidden" id="user-id" name="id">
+
+      <div class="form-group">
+        <label for="user-firstname">Nombre:</label>
+        <input type="text" id="user-firstname" name="firstname" required>
+      </div>
+      <div class="form-group">
+        <label for="user-lastname">Apellido:</label>
+        <input type="text" id="user-lastname" name="lastname" required>
+      </div>
+      <div class="form-group">
+        <label for="user-email">Email:</label>
+        <input type="email" id="user-email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label for="user-phone">Teléfono:</label>
+        <input type="tel" id="user-phone" name="phone">
+      </div>
+      <div class="form-group">
+        <label for="user-dni">DNI/RUT:</label>
+        <input type="text" id="user-dni" name="dni">
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="button secondary" id="modal-cancel-button">Cancelar</button>
+        <button type="submit" class="button primary">Guardar Usuario</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="modal.js"></script>
+</body>
+</html>

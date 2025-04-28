@@ -14,7 +14,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Prestamo {
+public class
+Prestamo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,8 +23,14 @@ public class Prestamo {
 
     private Long libroId;
     private Long usuarioId;
+    private String libroTitulo;
+    private String libroAutor;
+    private String usuarioNombre;
     private Integer monto;
 
     @Column(name = "fecha_prestamo")
     private LocalDate fechaPrestamo;
+
+    @Column(name = "fecha_devolucion")
+    private LocalDate fechaDevolucion;
 }

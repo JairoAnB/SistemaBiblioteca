@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Préstamos</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<main>
+    <h1>Gestión de Préstamos</h1>
+
+    <div class="actions-bar">
+        <input type="search" id="search-input" placeholder="Buscar por título de libro, nombre de usuario...">
+        <button id="create-button" class="button primary">Nuevo Préstamo</button>
+    </div>
+
+    <div class="table-container">
+        <table id="data-table">
+            <thead>
+            <tr>
+                <th>Libro (Título)</th>
+                <th>Usuario (Nombre)</th>
+                <th>Fecha de Préstamo</th>
+                <th>Fecha Devolución</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody id="loans-tbody">
+                <tr th:each="prestamo : ${prestamos}">
+                    <td th:text="${prestamo.libroTitulo}"></td>
+                    <td th:text="${prestamo.nombrePrestatario}"></td>
+                    <td th:text="${prestamo.fechaPrestado}"></td>
+                    <td th:text="${prestamo.fechaDevolucion}"></td>
+                    <td><i class="fas fa-pencil-alt"></i></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<div id="form-modal" class="modal">
+    <div class="modal-content">
+        <span class="modal-close" id="modal-close-button">&times;</span>
+        <h2 id="modal-title"> ➕ Nuevo Préstamo</h2>
+        <p id="modal-message">Por favor, complete el formulario para registrar un nuevo préstamo.</p>
+        <input type="hidden" name="prestamoId">
+
+
+        <form id="item-form" method="POST" action="/loan/create">
+            <div class="form-group">
+                <label for="loan-book-id">Libro:</label>
+                <select id="loan-book-id" name="libroPrestamoId" required>
+                    <th:block th:each="libro : ${libros}">
+                        <option th:value="${libro.libroId}" th:text="${libro.libroTitulo}"></option>
+                    </th:block>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="loan-user-id">Usuario:</label>
+                <select id="loan-user-id" name="usuarioPrestamoId" required>
+                    <th:block th:each="usuario : ${usuarios}">
+                        <option th:value="${usuario.identificador}" name="usuarioPrestamoId" th:text="${usuario.nombres}"></option>
+                    </th:block>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="loan-date-out">Fecha de Préstamo:</label>
+                <input type="date" id="loan-date-out" name="fechaPrestamo" required>
+            </div>
+            <div class="form-group">
+                <label for="loan-date-returned">Fecha Devolución:</label>
+                <input type="date" id="loan-date-returned" name="fechaDevolucion">
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="button secondary" id="modal-cancel-button">Cancelar</button>
+                <button type="submit" class="button primary">Guardar Préstamo</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="/modal.js"></script>
+</body>
+</html>
