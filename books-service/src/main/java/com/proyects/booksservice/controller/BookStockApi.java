@@ -85,12 +85,12 @@ public class BookStockApi {
     }
 
     @PutMapping("/updateStock/{id}/{stock}")
-    public ResponseEntity<String> updateStock(@PathVariable Long id, @PathVariable Integer stock){
+    public ResponseEntity<BookDTO> updateStock(@PathVariable Long id, @PathVariable Integer stock){
        BookDTO actualizado = bookService.updateStock(id, stock);
 
        return ResponseEntity
                .status(HttpStatus.OK)
-               .body("El stock del libro con la id " + id + " fue actualizado a " + stock + " correctamente");
+               .body(actualizado);
     }
 
 }

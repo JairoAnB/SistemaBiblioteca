@@ -13,4 +13,5 @@ public class UserDTO {
     private String nombres;
     private String correo;
     private String registro;
+    private boolean estado;
 }

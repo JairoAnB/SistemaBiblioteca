@@ -14,7 +14,6 @@ public class PrestamoDTO {
     private Long prestamoId;
     private Long libroId;
     private String idUsuario;
-    private String libroPrecio;
     private String libroTitulo;
     private String libroAutor;
     private String nombrePrestatario;

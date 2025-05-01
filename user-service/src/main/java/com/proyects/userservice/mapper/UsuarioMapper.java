@@ -17,7 +17,9 @@ public interface UsuarioMapper {
             @Mapping(source = "id", target = "identificador"),
             @Mapping(target = "nombres", expression = "java(usuario.getNombre() + \" \" + usuario.getApellido())"),
             @Mapping(source = "email", target= "correo"),
-            @Mapping(source = "fechaAlta", target = "registro")
+            @Mapping(source = "fechaAlta", target = "registro"),
+            @Mapping(source = "activo", target = "estado"),
+
     })
     UsuarioDTO toDto(Usuario usuario);
 
@@ -27,7 +29,9 @@ public interface UsuarioMapper {
             @Mapping(target = "nombre", expression = "java(usuarioDTO.getNombres().split(\" \")[0])"),
             @Mapping(target = "apellido", expression = "java(usuarioDTO.getNombres().substring(usuarioDTO.getNombres().indexOf(\" \") + 1))"),
             @Mapping(source = "correo", target= "email"),
-            @Mapping(source = "registro", target = "fechaAlta")
+            @Mapping(source = "registro", target = "fechaAlta"),
+            @Mapping(source = "estado", target = "activo"),
+
     })
     Usuario toEntity(UsuarioDTO usuarioDTO);
 

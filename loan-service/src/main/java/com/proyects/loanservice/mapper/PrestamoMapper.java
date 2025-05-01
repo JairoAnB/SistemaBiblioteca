@@ -17,7 +17,6 @@ public interface PrestamoMapper {
     @Mappings({
             @Mapping(source = "id", target = "prestamoId" ),
             @Mapping(source = "usuarioId", target = "idUsuario" ),
-            @Mapping(source = "monto", target = "libroPrecio" ),
             @Mapping(source = "fechaPrestamo", target = "fechaPrestado" ),
             @Mapping(source = "libroTitulo", target = "libroTitulo" ),
             @Mapping(source = "libroAutor", target = "libroAutor" ),
@@ -29,7 +28,6 @@ public interface PrestamoMapper {
     @Mappings({
             @Mapping(source = "prestamoId", target = "id" ),
             @Mapping(source = "idUsuario", target = "usuarioId" ),
-            @Mapping(source = "libroPrecio", target = "monto" ),
             @Mapping(source = "fechaPrestado", target = "fechaPrestamo" ),
             @Mapping(source = "libroTitulo", target = "libroTitulo" ),
             @Mapping(source = "libroAutor", target = "libroAutor" ),
@@ -49,7 +47,6 @@ public interface PrestamoMapper {
             @Mapping(source = "libroId", target = "libroPrestamoId"),
             @Mapping(source = "libroTitulo", target = "libroTitulo"),
             @Mapping(source = "usuarioNombre", target = "nombre"),
-            @Mapping(source = "monto", target = "libroPrecio"),
             @Mapping(source = "fechaPrestamo", target = "fechaPrestamo"),
             @Mapping(source = "fechaDevolucion", target = "fechaDevolucion"),
     })
@@ -60,7 +57,6 @@ public interface PrestamoMapper {
             @Mapping(source = "libroPrestamoId", target = "libroId"),
             @Mapping(source = "libroTitulo", target = "libroTitulo"),
             @Mapping(source = "nombre", target = "usuarioNombre"),
-            @Mapping(source = "libroPrecio", target = "monto"),
             @Mapping(source = "fechaPrestamo", target = "fechaPrestamo"),
             @Mapping(source = "fechaDevolucion", target = "fechaDevolucion"),
     })

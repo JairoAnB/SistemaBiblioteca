@@ -18,7 +18,7 @@ public class ControllerHandler {
     @ExceptionHandler(LibroNoActualizado.class)
     public ResponseEntity<ExceptionMessage> manejarLibroNoActualizado(LibroNoActualizado ex){
         ExceptionMessage error = new ExceptionMessage(ex.getMessage(), "Libro no actualizado");
-        return new ResponseEntity<>(error, HttpStatus.NOT_MODIFIED);
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(LibroNoCreado.class)

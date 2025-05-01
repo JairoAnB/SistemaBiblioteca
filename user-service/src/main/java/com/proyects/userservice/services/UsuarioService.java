@@ -1,11 +1,13 @@
 package com.proyects.userservice.services;
 
 import com.proyects.userservice.dto.UsuarioDTO;
+import com.proyects.userservice.excepcion.UsuarioNoEncontrado;
 import com.proyects.userservice.mapper.UsuarioMapper;
 import com.proyects.userservice.model.Usuario;
 import com.proyects.userservice.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +28,7 @@ public class UsuarioService {
     @Transactional(readOnly = true)
     public UsuarioDTO findUsuarioById(Long id){
         Usuario usuarioEntity = usuarioRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("El usuario con la id " + id + " no existe"));
+                .orElseThrow(() -> new UsuarioNoEncontrado("El usuario con la id " + id + " no existe"));
 
         return usuarioMapper.toDto(usuarioEntity);
     }
@@ -54,7 +56,7 @@ public class UsuarioService {
 
         String[] nombres = usuarioDTO.getNombres().trim().split(" ",2);
         String nombre = nombres[0];
-        String apellido = nombres.length > 1 ? nombres[1] : ""; //se pone un valor por defecto en caso de que no haya apellido
+        String apellido = nombres.length > 1 ? nombres[1] : "";
 
         usuarioExistente.setNombre(nombre);
         usuarioExistente.setApellido(apellido);
@@ -72,5 +74,17 @@ public class UsuarioService {
                 .orElseThrow(() -> new EntityNotFoundException("El usuario con la id " + id + " no existe"));
 
         usuarioRepository.delete(usuarioExistente);
+    }
+
+    @Transactional
+    public ResponseEntity<UsuarioDTO> updateEstado(Long id, Boolean estado){
+        Usuario usuarioExistente = usuarioRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("El usuario con la id " + id + " no existe"));
+
+        usuarioExistente.setActivo(estado);
+
+        usuarioRepository.save(usuarioExistente);
+
+        return ResponseEntity.ok(usuarioMapper.toDto(usuarioExistente));
     }
 }

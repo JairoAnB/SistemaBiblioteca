@@ -21,6 +21,7 @@ public class Usuario {
     private String nombre;
     private String apellido;
     private String email;
+    private boolean activo;
 
     @Column(name = "fecha_alta")
     private LocalDate fechaAlta;
