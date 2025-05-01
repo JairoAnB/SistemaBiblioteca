@@ -20,7 +20,7 @@ Este sistema se compone de tres microservicios principales que trabajan juntos d
 Este sistema está desarrollado con las siguientes tecnologías que lo hacen rápido, eficiente y fácil de mantener:
 
 ![Java](https://img.shields.io/badge/Java-17-orange)
-![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.x-green)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.x-green)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17-blue)
 ![JPA](https://img.shields.io/badge/JPA-Hibernate-lightgrey)
 ![REST API](https://img.shields.io/badge/REST%20API-RESTful-red)
@@ -58,6 +58,7 @@ El **Book Service** gestiona los libros disponibles en el sistema:
 - **Consultar libro por ID**: Si necesitas información de un libro en particular, solo debes pasar el ID.
 - **Agregar un nuevo libro**: Puedes agregar nuevos libros al sistema.
 - **Actualizar un libro**: Cambia detalles de un libro como el título, autor o el stock disponible.
+- **Actualizar el stock**: Solo para actualizar el stock del sistema.
 - **Eliminar un libro**: Si un libro ya no está disponible, puedes eliminarlo del sistema.
 
 Endpoints:
@@ -79,11 +80,12 @@ El **User Service** es donde se gestionan los usuarios del sistema. Este servici
 - **Eliminar un usuario**: Si un usuario ya no es necesario, puedes eliminarlo del sistema.
 
 Endpoints:
-- `GET /api/users` – Obtiene todos los usuarios.
-- `GET /api/users/{id}` – Obtiene un usuario por su ID.
-- `POST /api/users/create` – Crea un nuevo usuario.
-- `PUT /api/users/update/{id}` – Actualiza un usuario.
-- `DELETE /api/users/delete/{id}` – Elimina un usuario.
+- `GET /api/usuarios` – Obtiene todos los usuarios.
+- `GET /api/usuarios/{id}` – Obtiene un usuario por su ID.
+- `POST /api/usuarios/create` – Crea un nuevo usuario.
+- `PUT /api/usuarios/update/{id}` – Actualiza un usuario.
+- `PUT /updateEstado/{id}/{estado}` – Actualiza el estado del prestamo de un usuario.
+- `DELETE /api/usuarios/delete/{id}` – Elimina un usuario.
 
 ---
 
@@ -111,10 +113,7 @@ INSERT INTO book (titulo, autor_name, isbn, stock) VALUES
 ### **Prestamos (loan Service)**
 ```
 -- Insertar préstamos
-INSERT INTO prestamo (libro_id, usuario_id, monto, fecha_prestamo) VALUES
-(1, 1, 500, '2023-04-01'),
-(2, 2, 600, '2023-04-15'),
-(3, 3, 450, '2023-04-20');
+Recomiendo insertar desde el mismo postman o el cliente que ocupes para hacer las solicitudes HTTP por medio del body.
 ```
 ## 📡 Cómo Probar la API
 
